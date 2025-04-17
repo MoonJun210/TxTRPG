@@ -33,7 +33,7 @@ public class Status
         this.currenthp = maxHp;
         this.atkDmg = baseAtk;
         this.defence = baseDef;
-        this.gld = 100;
+        this.gld = 1500;
 
         Inventory = inventory;
         RecalculateStats();
@@ -104,31 +104,10 @@ public class Status
 
     void UpdateLevel()
     {
-        switch(DgClear)
-        {
-            case 0:
-                Level = 1; 
-                break;
-            case 1:
-                Level = 2;
-                AtkDmg += 0.5f;
-                Defence += 1;
-                break;
-            case 2:
-                Level = 3;
-                AtkDmg += 0.5f;
-                Defence += 1;
-                break;
-            case 3:
-                Level = 4;
-                AtkDmg += 0.5f;
-                Defence += 1;
-                break;
-            case 4:
-                Level = 5;
-                AtkDmg += 0.5f;
-                Defence += 1;
-                break;
-        }
+        Level++;
+        AtkDmg += 0.5f;
+        Defence += 1;
+
+        RecalculateStats();
     }
 }

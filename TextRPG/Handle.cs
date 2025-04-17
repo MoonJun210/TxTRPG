@@ -216,7 +216,7 @@ namespace TextRPG
             }
         }
 
-        public static void InputDungeon(Status player, Action defaultAction, Action finallyAction)
+        public static void InputDungeon1(Status player, Action defaultAction, Action finallyAction)
         {
             string input = Console.ReadLine();
             try
@@ -226,13 +226,13 @@ namespace TextRPG
                 switch (choice)
                 {
                     case 1:
-                        Dungeon.EnterDungeon(DungeonDifficulty.Easy, player);
+                        Dungeon.EnterDungeon1(DungeonDifficulty.Easy, player);
                         break;
                     case 2:
-                        Dungeon.EnterDungeon(DungeonDifficulty.Normal, player);
+                        Dungeon.EnterDungeon1(DungeonDifficulty.Normal, player);
                         break;
                     case 3:
-                        Dungeon.EnterDungeon(DungeonDifficulty.Hard, player);
+                        Dungeon.EnterDungeon1(DungeonDifficulty.Hard, player);
                         break;
                     case 0:
                         defaultAction?.Invoke();
@@ -252,6 +252,70 @@ namespace TextRPG
             }
         }
 
+        public static void InputDungeon2(Status player, Action defaultAction, Action finallyAction)
+        {
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+
+                switch (choice)
+                {
+                    case 1:
+                        Dungeon.EnterDungeon2(DungeonDifficulty.Easy, player);
+                        break;
+                    case 2:
+                        Dungeon.EnterDungeon2(DungeonDifficulty.Normal, player);
+                        break;
+                    case 3:
+                        Dungeon.EnterDungeon2(DungeonDifficulty.Hard, player);
+                        break;
+                    case 0:
+                        defaultAction?.Invoke();
+                        return;
+                    default:
+                        Console.WriteLine("보기에 없는 숫자입니다.");
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("숫자를 입력해주세요.");
+            }
+            finally
+            {
+                finallyAction?.Invoke();
+            }
+        }
+        public static void InputDungeon3(Status player, Action defaultAction, Action finallyAction)
+        {
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+
+                switch (choice)
+                {
+                    case 1:
+                        Dungeon.EnterBoss( player);
+                        break;
+                    case 0:
+                        defaultAction?.Invoke();
+                        return;
+                    default:
+                        Console.WriteLine("보기에 없는 숫자입니다.");
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("숫자를 입력해주세요.");
+            }
+            finally
+            {
+                finallyAction?.Invoke();
+            }
+        }
         public static void HandleMenu(Action option1, Action defaultAction)
         {
             var actions = new Dictionary<int, Action>

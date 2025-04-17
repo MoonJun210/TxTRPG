@@ -55,6 +55,7 @@ namespace TextRPG
             }
 
             player = new Status(name, job, atk, def, inventory);
+       
             Console.WriteLine($"\n{name} 님의 {job} 캐릭터가 생성되었습니다!\n");
             Console.WriteLine("아무 키나 눌러 게임을 시작하세요...");
             Console.ReadKey();
@@ -78,7 +79,21 @@ namespace TextRPG
             Console.Write("원하는 행동을 입력해주세요.\n>> ");
 
 
-            MenuChoice();
+
+            if(player.Level <= 5)
+            {
+                MenuChoiceEasy();
+            }
+            else if(player.Level > 5 && player.Level < 10)
+            {
+                shop.UpdateShopItems();
+                MenuChoiceHard();
+            }
+            else if(player.Level == 10)
+            {
+                MenuChoiceBoss();
+            }
+            
         }
 
         // 이후 사용할 함수들
@@ -123,10 +138,21 @@ namespace TextRPG
             Handle.HandleMenu(PurchaseMenu, SellingMenu, StartMessage);
         }
 
-        static void MenuChoice()
+        static void MenuChoiceEasy()
         {
-            Handle.HandleMenu(ShowStatus, ShowInventory, EnterShop, EnterDungeon, TakeRelax, SaveGame, LoadGame, StartMessage);
+            Handle.HandleMenu(ShowStatus, ShowInventory, EnterShop, EnterDungeon1, TakeRelax, SaveGame, LoadGame, StartMessage);
         }
+
+        static void MenuChoiceHard()
+        {
+            Handle.HandleMenu(ShowStatus, ShowInventory, EnterShop, EnterDungeon2, TakeRelax, SaveGame, LoadGame, StartMessage);
+        }
+
+        static void MenuChoiceBoss()
+        {
+            Handle.HandleMenu(ShowStatus, ShowInventory, EnterShop, EnterBoss, TakeRelax, SaveGame, LoadGame, StartMessage);
+        }
+
 
         static void ExitCurrent()
         {
@@ -154,7 +180,7 @@ namespace TextRPG
             Handle.InputShopSell(inventory, player, StartMessage, EnterShop);
         }
 
-        static void EnterDungeon()
+        static void EnterDungeon1()
         {
             Console.WriteLine("\n던전에 입장합니다.\n");
             Console.WriteLine("================================");
@@ -166,14 +192,52 @@ namespace TextRPG
             Console.WriteLine("0. 나가기\n");
             Console.Write("원하는 행동을 입력해주세요.\n>> ");
 
-            Handle.InputDungeon(player, StartMessage, ExitDungeon);
+            Handle.InputDungeon1(player, StartMessage, ExitDungeon);
 
         }
+
+        static void EnterDungeon2()
+        {
+            Console.WriteLine("\n던전에 입장합니다.\n");
+            Console.WriteLine("================================");
+            Console.WriteLine("\n**던전**");
+            Console.WriteLine($"이곳에서 던전으로 들어갈 수 있습니다.\n");
+            Console.WriteLine("1. 쉬운 던전\t| 공격력 및 방어력 21 이상 권장");
+            Console.WriteLine("2. 일반 던전\t| 공격력 및 방어력 31 이상 권장");
+            Console.WriteLine("3. 어려운 던전\t| 공격력 및 방어력 41 이상 권장");
+            Console.WriteLine("0. 나가기\n");
+            Console.Write("원하는 행동을 입력해주세요.\n>> ");
+
+            Handle.InputDungeon2(player, StartMessage, ExitDungeon);
+
+        }
+
+        static void EnterBoss()
+        {
+            Console.WriteLine("\n던전에 입장합니다.\n");
+            Console.WriteLine("================================");
+            Console.WriteLine("\n**보스**");
+            Console.WriteLine($"이곳에서 보스를 처치하십시오. 부디,,\n");
+            Console.WriteLine("1. 보스\t| 공격력 및 방어력 51 이상 권장");
+            Console.WriteLine("0. 나가기\n");
+            Console.Write("원하는 행동을 입력해주세요.\n>> ");
+
+            Handle.InputDungeon3(player, StartMessage, ExitBoss);
+
+        }
+
 
         static void ExitDungeon()
         {
             Dungeon.DungeonResult();
             ExitCurrent();
+        }
+
+        static void ExitBoss()
+        {
+            Dungeon.BossResult();
+            ExitCurrent();
+
         }
 
         static void TakeRelax()
