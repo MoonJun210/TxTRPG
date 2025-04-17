@@ -25,7 +25,7 @@ namespace TextRPG
             }
         }
 
-        public static void InputInventory(Inventory inventory, Action defaultAction, Action finallyAction)
+        public static void InputInventory(Inventory inventory, Status player , Action defaultAction, Action finallyAction)
         {
             Console.WriteLine("\n0. 나가기\n");
             Console.Write("원하는 행동을 입력해주세요.\n>> "); 
@@ -40,7 +40,7 @@ namespace TextRPG
                 }
                 else if (inventory.GetAllItems().Count + 1 >= choice)
                 {
-                    inventory.EquipItem(choice-1);
+                    inventory.EquipItem(choice-1, player);
                 }
                 else
                 {

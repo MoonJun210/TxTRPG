@@ -50,10 +50,10 @@ namespace TextRPG
 
             Console.WriteLine($"\n{difficulty} 던전에 입장합니다! (권장 방어력: {recommendedDef})");
 
-            if (player.Defence - recommendedDef < 0)
+            if (player.TotalDef - recommendedDef < 0)
             {
                 bool fail = true;
-                if(player.Defence - recommendedDef < -5)
+                if(player.TotalDef - recommendedDef < -5)
                 {
                     Console.WriteLine($"\n{player.Name}님의 방어력이 너무 낮습니다! 힘든 싸움이 예상됩니다..!");
                     fail = random.Next(0, 100) < 80;
@@ -87,7 +87,7 @@ namespace TextRPG
 
             if (isCleared)
             {
-                int defDiff = recommendedDef - player.Defence;
+                int defDiff = recommendedDef - player.TotalDef;
                 int hpLoss = random.Next(20 + defDiff, 36 + defDiff);
                 player.CurrentHP -= hpLoss;
 
@@ -104,16 +104,16 @@ namespace TextRPG
                 {
                     isEasyToClear = true;
                     adjustedBaseReward = (int)(baseReward * 0.2);  // 80% 감소
-                    Console.WriteLine("레벨이 높아 쉬운 던전의 보상이 감소되었습니다. (-30%)");
+                    Console.WriteLine("레벨이 높아 쉬운 던전의 보상이 감소되었습니다. (-80%)");
                 }
                 else if (difficulty == DungeonDifficulty.Normal && player.Level >= 5)
                 {
                     isEasyToClear = true;
                     adjustedBaseReward = (int)(baseReward * 0.2);  // 80% 감소
-                    Console.WriteLine("레벨이 높아 일반 던전의 보상이 감소되었습니다. (-15%)");
+                    Console.WriteLine("레벨이 높아 일반 던전의 보상이 감소되었습니다. (-80%)");
                 }
 
-                int atkBonusPercent = random.Next((int)player.AtkDmg, (int)player.AtkDmg * 2 + 1);
+                int atkBonusPercent = random.Next((int)player.TotalAtk, (int)player.TotalAtk * 2 + 1);
                 int bonusGold = adjustedBaseReward * atkBonusPercent / 100;
                 rewardGold = adjustedBaseReward + bonusGold;
 

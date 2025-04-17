@@ -17,6 +17,8 @@ public class Status
     public string Job { get => job; set => job = value; }
     public float AtkDmg { get => atkDmg; set => atkDmg = value; }
     public int Defence { get => defence; set => defence = value; }
+    public float TotalAtk { get; set; }
+    public int TotalDef {  get; set; }
     public int CurrentHP { get => currenthp; set => currenthp = value; }
     public int MaxHp {get => maxHp; set => maxHp = value; }
     public int Gold { get => gld; set => gld = value; }
@@ -34,6 +36,8 @@ public class Status
         this.gld = 100;
 
         Inventory = inventory;
+        RecalculateStats();
+
     }
 
     public void PrintStatus()
@@ -43,8 +47,8 @@ public class Status
         Console.WriteLine($"직업: {job}");
         Console.WriteLine($"레벨: {level}");
         Console.WriteLine($"체력: {currenthp}");
-        Console.WriteLine($"공격력: {atkDmg} (+{ItemAttack()})");
-        Console.WriteLine($"방어력: {defence} (+{ItemDefense()})");
+        Console.WriteLine($"공격력: {TotalAtk} (+{ItemAttack()})");
+        Console.WriteLine($"방어력: {TotalDef} (+{ItemDefense()})");
         Console.WriteLine($"소지 골드: {gld} G");
         Console.WriteLine("======================\n");
 
@@ -62,7 +66,6 @@ public class Status
                     bonus += item.Attack;
             }
             return bonus;
-        
     }
 
     public int ItemDefense()
@@ -77,6 +80,13 @@ public class Status
             return  bonus;
         
     }
+
+    public void RecalculateStats()
+    {
+        TotalAtk = atkDmg + ItemAttack();
+        TotalDef = defence + ItemDefense();
+    }
+
 
     public void AddDungeonClear(bool isEasyToClear)
     {

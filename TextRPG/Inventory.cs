@@ -23,50 +23,7 @@ public class Inventory
         Console.WriteLine($"{item.Name}을(를) 인벤토리에 추가했습니다.");
     }
 
-    // 아이템 출력
-    public void ShowInventory()
-    {
-        Console.WriteLine("\n**인벤토리**");
-        Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.\n");
-        Console.WriteLine("\n[아이템 목록]");
-        if (items.Count == 0)
-        {
-            Console.WriteLine("아이템이 없습니다.");
-        }
-        else
-        {
-            foreach (var item in items)
-            {
-                item.PrintInfo();
-            }
-        }
-        Console.WriteLine("");
-    }
-
-    public void ShowEquipManageInventory()
-    {
-        Console.WriteLine("\n**인벤토리** - 장비 관리");
-        Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.\n");
-        Console.WriteLine("\n[아이템 목록]");
-        if (items.Count == 0)
-        {
-            Console.WriteLine("아이템이 없습니다.");
-        }
-        else
-        {
-            int cnt = 1;
-            foreach (var item in items)
-            {
-                item.PrintInfo(cnt);
-                cnt++;
-            }
-        }
-        Console.WriteLine("");
-    }
-
-
-
-    public void EquipItem(int index)
+    public void EquipItem(int index, Status player)
     {
         if (index < 0 || index >= items.Count)
         {
@@ -81,28 +38,54 @@ public class Inventory
         {
             item.IsEquipped = false;
             equippedItems.Remove(item.Type);
-            return;
         }
-
-        // 같은 타입의 장비가 이미 장착되어 있다면 해제
-        if (equippedItems.ContainsKey(item.Type))
+        else
         {
-            Item oldItem = equippedItems[item.Type];
-            oldItem.IsEquipped = false;
+            // 같은 타입 장비 해제
+            if (equippedItems.ContainsKey(item.Type))
+            {
+                Item oldItem = equippedItems[item.Type];
+                oldItem.IsEquipped = false;
+            }
+
+            // 장착
+            item.IsEquipped = true;
+            equippedItems[item.Type] = item;
+            Console.WriteLine($"{item.Name}을(를) 장착했습니다.");
         }
 
-        // 새 아이템 장착
-        item.IsEquipped = true;
-        equippedItems[item.Type] = item;
-        Console.WriteLine($"{item.Name}을(를) 장착했습니다.");
+        // 장착/해제 후 스탯 재계산
+        player.RecalculateStats();
+    }
+
+
+    public void ShowInventory()
+    {
+        ShowItemList("인벤토리", "보유 중인 아이템을 관리할 수 있습니다.\n", items, (item, index) => item.PrintInfo());
+    }
+
+    public void ShowEquipManageInventory()
+    {
+        ShowItemList("인벤토리 - 장비 관리", "보유 중인 아이템을 관리할 수 있습니다.\n", items, (item, index) => item.PrintInfo(index));
     }
 
     public void ShowSellingShop(Status player)
     {
-        Console.WriteLine("\n**상점** - 아이템 판매");
-        Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.\n");
-        Console.WriteLine("\n[보유 골드]");
-        Console.WriteLine($"{player.Gold} G");
+        ShowItemList("상점 - 아이템 판매", "필요한 아이템을 얻을 수 있는 상점입니다.\n", items, (item, index) => item.PrintInfoInShopSelling(index), player);
+    }
+
+    // 공통 출력 메서드
+    private void ShowItemList(string title, string subTitle, List<Item> items, Action<Item, int> printMethod, Status player = null)
+    {
+        Console.WriteLine($"\n**{title}**");
+        Console.WriteLine(subTitle);
+
+        if (player != null)
+        {
+            Console.WriteLine("\n[보유 골드]");
+            Console.WriteLine($"{player.Gold} G");
+        }
+
         Console.WriteLine("\n[아이템 목록]");
         if (items.Count == 0)
         {
@@ -110,16 +93,15 @@ public class Inventory
         }
         else
         {
-            int cnt = 1;
-            foreach (var item in items)
+            for (int i = 0; i < items.Count; i++)
             {
-                item.PrintInfoInShopSelling(cnt);
-                cnt++;
+                printMethod(items[i], i + 1);
             }
         }
         Console.WriteLine("");
     }
 
+  
     // 인벤토리에 있는 모든 아이템 리스트 반환 (필요 시)
     public List<Item> GetAllItems() => items;
 

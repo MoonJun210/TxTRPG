@@ -85,6 +85,7 @@ namespace TextRPG
         static void ShowStatus()
         {
             Console.WriteLine("\n플레이어의 상태를 표시합니다.\n");
+            Console.WriteLine("================================");
 
             player.PrintStatus();
 
@@ -138,7 +139,7 @@ namespace TextRPG
         static void EquiptManage()
         {
             inventory.ShowEquipManageInventory();
-            Handle.InputInventory(inventory, StartMessage, ShowInventory);
+            Handle.InputInventory(inventory, player, StartMessage, ShowInventory);
         }
 
         static void PurchaseMenu()
@@ -178,6 +179,8 @@ namespace TextRPG
         static void TakeRelax()
         {
             Console.WriteLine("\n휴식을 준비합니다.\n");
+            Console.WriteLine("================================");
+            Console.WriteLine("\n**휴식**");
             Console.WriteLine($"500 G 를 내면 체력을 회복할 수 있습니다. (보유골드 : {player.Gold} G)");
             Console.WriteLine("\n1. 휴식하기");
             Console.WriteLine("0. 나가기\n");
