@@ -217,7 +217,7 @@ namespace TextRPG
             Console.WriteLine("\n던전에 입장합니다.\n");
             Console.WriteLine("================================");
             Console.WriteLine("\n**보스**");
-            Console.WriteLine($"이곳에서 보스를 처치하십시오. 부디,,\n");
+            Console.WriteLine($"이곳에서 보스를 처치하십시오. 무운을 빕니다.\n");
             Console.WriteLine("1. 보스\t| 공격력 및 방어력 51 이상 권장");
             Console.WriteLine("0. 나가기\n");
             Console.Write("원하는 행동을 입력해주세요.\n>> ");
